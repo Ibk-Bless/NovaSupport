@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { isValidStellarAddress } from "@/lib/stellar";
 
+import { ProfileCardSkeleton } from "./skeleton";
+
 type Asset = {
   code: string;
   issuer?: string | null;
@@ -25,6 +27,7 @@ type ProfileCardProps = {
   twitterHandle?: string;
   githubHandle?: string;
   stats?: ProfileStats;
+  isLoading?: boolean;
 };
 
 export function ProfileCard({
@@ -39,9 +42,13 @@ export function ProfileCard({
   twitterHandle,
   githubHandle,
   stats,
+  isLoading,
 }: ProfileCardProps) {
   const [copied, setCopied] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
+
+  if (isLoading) return <ProfileCardSkeleton />;
+
   const isValid = isValidStellarAddress(walletAddress);
   const hasSocialLinks = email || websiteUrl || twitterHandle || githubHandle;
 
